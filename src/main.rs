@@ -1,8 +1,8 @@
 use bech32::ToBase32;
 use bitcoin_hashes::hash160;
 use bitcoin_hashes::Hash;
-use rand::thread_rng;
-use secp256k1;
+use secp256k1::{Secp256k1};
+use secp256k1::rand::{thread_rng};
 use std::env;
 use std::io::Write;
 use std::sync::{atomic::AtomicBool, atomic::AtomicU64, atomic::Ordering, Arc};
@@ -19,12 +19,12 @@ fn run(id: i32, prefix: String, counter: Arc<AtomicU64>, flag: Arc<AtomicBool>) 
     let sync_num = 10000;
     let log_num = 100000;
     let estimated_hash_num = 32.0_f64.powi(prefix.len() as i32 - 4); // except 'bc1q'
+    let secp = Secp256k1::new();
     loop {
-        let raw_private_key = secp256k1::SecretKey::random(&mut thread_rng());
-        let raw_public_key = secp256k1::PublicKey::from_secret_key(&raw_private_key);
+        let (secret_key, public_key) = secp.generate_keypair(&mut thread_rng());
         let mut hash_engine = hash160::Hash::engine();
         hash_engine
-            .write_all(&raw_public_key.serialize_compressed())
+            .write_all(&public_key.serialize())
             .unwrap();
         let hash_data = hash160::Hash::from_engine(hash_engine)[..].to_vec();
         let version = bech32::u5::try_from_u8(0).unwrap();
@@ -34,7 +34,7 @@ fn run(id: i32, prefix: String, counter: Arc<AtomicU64>, flag: Arc<AtomicBool>) 
         if address.to_string().starts_with(&prefix) {
             let mut ret = [0; 34];
             ret[0] = 128;
-            ret[1..33].copy_from_slice(&raw_private_key.serialize());
+            ret[1..33].copy_from_slice(&secret_key[..]);
             ret[33] = 1;
             let private_key = bs58::encode(&ret[..]).with_check().into_string();
             println!("result:");
