@@ -1,5 +1,5 @@
 [package]
-name = "bitcoin-address-prefix-searcher"
+name = "bech32-vanity-address-generator"
 version = "0.1.0"
 authors = ["lispczz <mycinbrin@gmail.com>"]
 edition = "2018"

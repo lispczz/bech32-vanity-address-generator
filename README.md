@@ -1,4 +1,4 @@
-This is a bitcoin address utility used for searching addresses with a given prefix.    
+This is a bitcoin bech32 vanity address generator written in rust. Bech32 addresses are 'bc1q' started segwit native addresses specified by BIP 0173.   
 
 ## Usage
 
@@ -25,5 +25,3 @@ privkey:	Kz7QeGuWJMYweKxgUVskDHkw4gU9nbCkd2qnAtEjwVhQHxmub1uL
 address:	bc1qp2pecff5tgvzrqkx7ktnv3xazj4l2dcm8e2nae
 ```
 
-## Notes
-Only bech32 formatted addresses are supported now.

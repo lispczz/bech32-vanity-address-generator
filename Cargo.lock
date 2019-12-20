@@ -13,7 +13,7 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "9e0089c35ab7c6f2bc55ab23f769913f0ac65b1023e7e74638a1f43128dd5df2"
 
 [[package]]
-name = "bitcoin-address-prefix-searcher"
+name = "bech32-vanity-address-generator"
 version = "0.1.0"
 dependencies = [
  "bech32",
